@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="view-transition" content="same-origin">
+    <title>Linker | Shorten Your URL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        @import url('https://api.fontshare.com/v2/css?f[]=clash-grotesk@700,600,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,300;7..72,400&display=swap');
+
+        :root {
+            --coral: #FF6B35;
+            --luxury-dark: #0f172a;
+            --luxury-bg: #fcfcfd;
+        }
+
+        body {
+            font-family: 'Literata', serif;
+            background-color: var(--luxury-bg);
+            color: var(--luxury-dark);
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Clash Grotesk', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        .gradient-luxury {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+
+        .accent-gradient {
+            background: linear-gradient(135deg, #FF6B35 0%, #E85D04 100%);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .three-d {
+            transform-style: preserve-3d;
+            transition: transform 0.4s ease;
+        }
+
+        .three-d:hover {
+            transform: perspective(1000px) rotateX(2deg) rotateY(1deg) scale(1.01);
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .blob-1 {
+            background: #FF6B35;
+            width: 600px;
+            height: 600px;
+            top: -200px;
+            right: -100px;
+            animation: float 15s infinite alternate;
+        }
+
+        .blob-2 {
+            background: #1e293b;
+            width: 500px;
+            height: 500px;
+            bottom: 0;
+            left: -150px;
+            animation: float 12s infinite alternate-reverse;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 100px) scale(1.1); }
+        }
+
+        .url-input-focus:focus-within {
+            border-color: var(--coral);
+            box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen relative overflow-x-hidden">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+
+        <header class="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-xl border-b border-slate-100">
+            <nav class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+                <a href="#" id="nav-logo" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 accent-gradient rounded-xl flex items-center justify-center transition-transform group-hover:rotate-12 shadow-lg shadow-orange-500/20">
+                        <iconify-icon icon="lucide:link-2" class="text-white text-xl"></iconify-icon>
+                    </div>
+                    <span class="text-2xl font-bold tracking-tight font-heading">Linker</span>
+                </a>
+                <div class="hidden lg:flex items-center gap-12 text-sm font-semibold tracking-wide uppercase text-slate-500">
+                    <a href="#" id="nav-home" class="hover:text-[#FF6B35] transition-colors">Home</a>
+                    <a href="#" id="nav-about" class="hover:text-[#FF6B35] transition-colors">About</a>
+                    <a href="#" id="nav-contact" class="hover:text-[#FF6B35] transition-colors">Contact</a>
+                    <a href="#" id="nav-shortener" class="text-[#FF6B35] border-b-2 border-[#FF6B35] pb-1">URL Shortener</a>
+                </div>
+                <div class="flex items-center gap-6">
+                    <a href="#" id="nav-signin" class="text-sm font-bold">Sign In</a>
+                    <a href="#" id="nav-getstarted" class="accent-gradient text-white text-sm font-bold px-8 py-3 rounded-full hover:shadow-xl hover:shadow-orange-500/30 transition-all">Get Started</a>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <section class="pt-48 pb-24 px-6">
+                <div class="max-w-4xl mx-auto text-center reveal active mb-20">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-50 border border-orange-100 text-[#FF6B35] text-xs font-bold uppercase tracking-widest mb-8">
+                        <iconify-icon icon="lucide:zap"></iconify-icon> Real-time Infrastructure
+                    </div>
+                    <h1 class="text-6xl md:text-8xl font-bold font-heading leading-none tracking-tighter mb-8">Your Links, <br><span class="text-[#FF6B35]">Perfected</span> in Seconds.</h1>
+                    <p class="text-xl text-slate-500 leading-relaxed">Paste your long, cluttered URLs and transform them into elegant, branded assets that drive engagement and trust.</p>
+                </div>
+
+                <div class="max-w-4xl mx-auto px-6 mb-32 reveal active delay-200">
+                    <div class="bg-white rounded-[3rem] p-4 lg:p-6 shadow-2xl border border-slate-100 relative group">
+                        <div class="flex flex-col lg:flex-row gap-4">
+                            <div class="flex-1 relative flex items-center url-input-focus border-2 border-slate-100 rounded-[2rem] transition-all bg-slate-50/50 p-2">
+                                <iconify-icon icon="lucide:link-2" class="text-slate-400 ml-4 text-xl"></iconify-icon>
+                                <input type="text" id="long-url-input" placeholder="Paste your long URL here..." class="w-full bg-transparent border-none focus:ring-0 px-4 py-3 text-lg text-slate-900 placeholder-slate-400">
+                                <button id="shorten-btn" class="accent-gradient text-white font-bold px-10 py-4 rounded-[1.5rem] shadow-xl shadow-orange-500/30 hover:scale-105 transition-transform whitespace-nowrap">Shorten URL</button>
+                            </div>
+                        </div>
+                        <div class="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm font-bold text-slate-400">
+                            <div class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:shield-check" class="text-orange-400"></iconify-icon> SSL Encrypted
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:bar-chart-2" class="text-orange-400"></iconify-icon> Real-time Stats
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <iconify-icon icon="lucide:qr-code" class="text-orange-400"></iconify-icon> QR Auto-Gen
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <section class="max-w-7xl mx-auto px-6 mb-40 reveal">
+                    <div class="bg-white rounded-[4rem] border border-slate-100 overflow-hidden shadow-sm">
+                        <div class="p-12 border-b border-slate-50 flex items-center justify-between">
+                            <h3 class="text-3xl font-bold font-heading">Recently Perfected</h3>
+                            <button class="text-sm font-bold text-orange-500 hover:text-orange-600">View All History</button>
+                        </div>
+                        <div class="divide-y divide-slate-50">
+                            <div class="p-8 flex flex-col lg:flex-row items-center justify-between gap-8 group hover:bg-slate-50/50 transition-colors">
+                                <div class="flex items-center gap-6 flex-1">
+                                    <div class="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center text-orange-500">
+                                        <iconify-icon icon="lucide:globe" class="text-2xl"></iconify-icon>
+                                    </div>
+                                    <div class="overflow-hidden">
+                                        <h4 class="font-bold font-heading text-lg">linker.io/prestige-2024</h4>
+                                        <p class="text-slate-400 text-sm truncate max-w-sm">https://very-long-and-complex-marketing-link-from-enterprise-campaign.com/utm_source...</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-12">
+                                    <div class="text-center">
+                                        <div class="text-xl font-bold font-heading">1,482</div>
+                                        <div class="text-[10px] uppercase font-bold text-slate-300 tracking-widest">Total Clicks</div>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <button class="w-12 h-12 rounded-xl border border-slate-200 flex items-center justify-center text-slate-400 hover:text-orange-500 hover:border-orange-500 transition-all shadow-sm" title="Copy Link"><iconify-icon icon="lucide:copy"></iconify-icon></button>
+                                        <button class="w-12 h-12 rounded-xl border border-slate-200 flex items-center justify-center text-slate-400 hover:text-orange-500 hover:border-orange-500 transition-all shadow-sm" title="View QR Code"><iconify-icon icon="lucide:qr-code"></iconify-icon></button>
+                                        <button class="w-12 h-12 rounded-xl bg-slate-900 flex items-center justify-center text-white hover:bg-orange-600 transition-all shadow-lg" title="Analytics"><iconify-icon icon="lucide:bar-chart-3"></iconify-icon></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-8 flex flex-col lg:flex-row items-center justify-between gap-8 group hover:bg-slate-50/50 transition-colors">
+                                <div class="flex items-center gap-6 flex-1">
+                                    <div class="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400">
+                                        <iconify-icon icon="lucide:share-2" class="text-2xl"></iconify-icon>
+                                    </div>
+                                    <div class="overflow-hidden">
+                                        <h4 class="font-bold font-heading text-lg">linker.io/social-growth</h4>
+                                        <p class="text-slate-400 text-sm truncate max-w-sm">https://youtube.com/watch?v=premium-video-content-series-launch-event-stream...</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-12">
+                                    <div class="text-center">
+                                        <div class="text-xl font-bold font-heading">892</div>
+                                        <div class="text-[10px] uppercase font-bold text-slate-300 tracking-widest">Total Clicks</div>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <button class="w-12 h-12 rounded-xl border border-slate-200 flex items-center justify-center text-slate-400 hover:text-orange-500 hover:border-orange-500 transition-all shadow-sm"><iconify-icon icon="lucide:copy"></iconify-icon></button>
+                                        <button class="w-12 h-12 rounded-xl border border-slate-200 flex items-center justify-center text-slate-400 hover:text-orange-500 hover:border-orange-500 transition-all shadow-sm"><iconify-icon icon="lucide:qr-code"></iconify-icon></button>
+                                        <button class="w-12 h-12 rounded-xl bg-slate-900 flex items-center justify-center text-white hover:bg-orange-600 transition-all shadow-lg"><iconify-icon icon="lucide:bar-chart-3"></iconify-icon></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <section class="max-w-7xl mx-auto px-6 mb-40">
+                <div class="text-center mb-24 reveal">
+                    <h2 class="text-5xl font-bold font-heading mb-6">Premium Capabilities</h2>
+                    <p class="text-slate-500 text-lg">Unmatched tools for the world's most demanding link management.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="p-10 bg-white border border-slate-100 rounded-[2.5rem] shadow-sm hover:border-orange-200 transition-all three-d">
+                        <div class="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center text-orange-500 mb-6"><iconify-icon icon="lucide:palette" class="text-2xl"></iconify-icon></div>
+                        <h4 class="text-2xl font-bold font-heading mb-4">Custom Branding</h4>
+                        <p class="text-slate-500 text-sm">Use your own custom domain and slugs to maintain 100% brand consistency.</p>
+                    </div>
+                    <div class="p-10 bg-white border border-slate-100 rounded-[2.5rem] shadow-sm hover:border-orange-200 transition-all three-d">
+                        <div class="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center text-orange-500 mb-6"><iconify-icon icon="lucide:shield-lock" class="text-2xl"></iconify-icon></div>
+                        <h4 class="text-2xl font-bold font-heading mb-4">Password Protected</h4>
+                        <p class="text-slate-500 text-sm">Control access to sensitive content with secure, military-grade password protection.</p>
+                    </div>
+                    <div class="p-10 bg-white border border-slate-100 rounded-[2.5rem] shadow-sm hover:border-orange-200 transition-all three-d">
+                        <div class="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center text-orange-500 mb-6"><iconify-icon icon="lucide:clock-4" class="text-2xl"></iconify-icon></div>
+                        <h4 class="text-2xl font-bold font-heading mb-4">Expiry Links</h4>
+                        <p class="text-slate-500 text-sm">Set automatic expiration dates for limited-time offers and seasonal campaigns.</p>
+                    </div>
+                    <div class="p-10 bg-white border border-slate-100 rounded-[2.5rem] shadow-sm hover:border-orange-200 transition-all three-d">
+                        <div class="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center text-orange-500 mb-6"><iconify-icon icon="lucide:mouse-pointer-2" class="text-2xl"></iconify-icon></div>
+                        <h4 class="text-2xl font-bold font-heading mb-4">Retargeting</h4>
+                        <p class="text-slate-500 text-sm">Add tracking pixels to build custom audiences from every click on your links.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="max-w-7xl mx-auto px-6 mb-40">
+                <div class="bg-slate-900 rounded-[4rem] p-12 lg:p-20 relative overflow-hidden">
+                    <div class="absolute -top-1/2 -right-1/4 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(255,107,53,0.1),transparent)] pointer-events-none"></div>
+                    <div class="grid lg:grid-cols-2 gap-20 items-center relative z-10">
+                        <div class="reveal">
+                            <h3 class="text-4xl font-bold font-heading text-white mb-8">Insights that <br><span class="text-orange-400">Drive Growth.</span></h3>
+                            <div class="space-y-8">
+                                <div class="flex gap-6">
+                                    <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0"><iconify-icon icon="lucide:map" class="text-white"></iconify-icon></div>
+                                    <div>
+                                        <h5 class="text-white font-bold mb-1">Geographic Distribution</h5>
+                                        <p class="text-slate-400 text-sm">See exactly where your traffic is coming from down to the city level.</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-6">
+                                    <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0"><iconify-icon icon="lucide:monitor" class="text-white"></iconify-icon></div>
+                                    <div>
+                                        <h5 class="text-white font-bold mb-1">Device Breakdown</h5>
+                                        <p class="text-slate-400 text-sm">Optimize your content based on the screens your audience uses most.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="reveal delay-200">
+                            <div class="bg-white/5 backdrop-blur-md rounded-[3rem] p-8 border border-white/10">
+                                <div class="flex justify-between items-end mb-10">
+                                    <div class="text-white">
+                                        <div class="text-sm uppercase font-bold text-slate-400 tracking-widest mb-1">Engagement Trend</div>
+                                        <div class="text-4xl font-bold font-heading">24,812 <span class="text-green-400 text-sm font-normal">+12%</span></div>
+                                    </div>
+                                    <iconify-icon icon="lucide:activity" class="text-3xl text-orange-400"></iconify-icon>
+                                </div>
+                                <div class="h-48 flex items-end gap-2 px-2" id="chart-container">
+                                    </div>
+                                <div class="mt-6 flex justify-between text-[10px] font-bold text-slate-500 uppercase tracking-tighter">
+                                    <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="max-w-7xl mx-auto px-6 mb-40">
+                <div class="grid grid-cols-2 lg:grid-cols-3 gap-12">
+                    <div class="text-center reveal">
+                        <div class="text-6xl font-bold font-heading text-slate-900 mb-2" id="stat-links">125,482</div>
+                        <div class="text-xs font-bold uppercase tracking-widest text-slate-400">Links Shortened Today</div>
+                    </div>
+                    <div class="text-center reveal delay-100">
+                        <div class="text-6xl font-bold font-heading text-slate-900 mb-2" id="stat-clicks">2.4M</div>
+                        <div class="text-xs font-bold uppercase tracking-widest text-slate-400">Total Monthly Clicks</div>
+                    </div>
+                    <div class="text-center reveal delay-200 lg:col-span-1 col-span-2">
+                        <div class="text-6xl font-bold font-heading text-slate-900 mb-2" id="stat-ctr">4.82%</div>
+                        <div class="text-xs font-bold uppercase tracking-widest text-slate-400">Average CTR Increase</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="py-20 px-6">
+                <div class="max-w-6xl mx-auto reveal">
+                    <div class="accent-gradient rounded-[4rem] p-16 lg:p-24 relative overflow-hidden text-center text-white shadow-2xl shadow-orange-500/30">
+                        <div class="absolute -top-1/2 -left-1/4 w-[150%] h-[150%] bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent)] pointer-events-none"></div>
+                        <div class="relative z-10">
+                            <h2 class="text-5xl lg:text-7xl font-bold font-heading mb-8">The Gold Standard <br>of Connectivity.</h2>
+                            <p class="text-white/80 text-lg max-w-2xl mx-auto mb-12 uppercase tracking-widest font-bold">Join the world's most prestigious brands.</p>
+                            <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+                                <a href="#" id="final-shorten-cta" class="w-full sm:w-auto px-12 py-5 bg-white text-orange-600 font-bold rounded-full hover:scale-105 transition-transform shadow-2xl shadow-black/10">Start for Free</a>
+                                <a href="#" id="final-pricing-cta" class="w-full sm:w-auto px-12 py-5 bg-black/10 text-white font-bold rounded-full border border-white/20 hover:bg-black/20 transition-all">View All Features</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="bg-white pt-32 pb-12 border-t border-slate-100">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="grid grid-cols-2 lg:grid-cols-5 gap-16 mb-24">
+                    <div class="col-span-2">
+                        <a href="#" class="flex items-center gap-3 mb-8">
+                            <div class="w-8 h-8 accent-gradient rounded-lg flex items-center justify-center shadow-md">
+                                <iconify-icon icon="lucide:link-2" class="text-white"></iconify-icon>
+                            </div>
+                            <span class="text-xl font-bold font-heading">Linker</span>
+                        </a>
+                        <p class="text-slate-500 max-w-sm mb-10 leading-relaxed">Elevating digital connections through premium infrastructure and sophisticated link management solutions.</p>
+                        <div class="flex gap-6">
+                            <a href="#" id="footer-twitter" class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:bg-[#FF6B35] hover:text-white transition-all"><iconify-icon icon="mdi:twitter"></iconify-icon></a>
+                            <a href="#" id="footer-linkedin" class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:bg-[#FF6B35] hover:text-white transition-all"><iconify-icon icon="mdi:linkedin"></iconify-icon></a>
+                            <a href="#" id="footer-github" class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:bg-[#FF6B35] hover:text-white transition-all"><iconify-icon icon="mdi:github"></iconify-icon></a>
+                        </div>
+                    </div>
+                    <div>
+                        <h5 class="font-bold font-heading uppercase text-xs tracking-widest text-slate-400 mb-8">Product</h5>
+                        <ul class="space-y-4 text-sm font-bold text-slate-600">
+                            <li><a href="#" class="hover:text-[#FF6B35] transition-colors">Premium Features</a></li>
+                            <li><a href="#" class="hover:text-[#FF6B35] transition-colors">Branded Links</a></li>
+                            <li><a href="#" class="hover:text-[#FF6B35] transition-colors">QR Codes</a></li>
+                            <li><a href="#" class="hover:text-[#FF6B35] transition-colors">Enterprise SLA</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-bold font-heading uppercase text-xs tracking-widest text-slate-400 mb-8">Company</h5>
+                        <ul class="space-y-4 text-sm font-bold text-slate-600">
+                            <li><a href="#" class="hover:text-[#FF6B35] transition-colors">Our Legacy</a></li>
+                            <li><a href="#" class="hover:text-[#FF6B35] transition-colors">Privacy Policy</a></li>
+                            <li><a href="#" class="hover:text-[#FF6B35] transition-colors">Terms of Use</a></li>
+                            <li><a href="#" class="hover:text-[#FF6B35] transition-colors">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-bold font-heading uppercase text-xs tracking-widest text-slate-400 mb-8">Support</h5>
+                        <ul class="space-y-4 text-sm font-bold text-slate-600">
+                            <li><a href="#" class="hover:text-[#FF6B35] transition-colors">Documentation</a></li>
+                            <li><a href="#" class="hover:text-[#FF6B35] transition-colors">API Status</a></li>
+                            <li><a href="#" class="hover:text-[#FF6B35] transition-colors">Help Center</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="flex flex-col md:flex-row justify-between items-center gap-6 pt-12 border-t border-slate-50 text-xs text-slate-400 font-bold uppercase tracking-widest">
+                    <p>&copy; 2024 Linker Technologies. A Premium Experience.</p>
+                    <div class="flex gap-8">
+                        <a href="#" class="hover:text-slate-900">Privacy</a>
+                        <a href="#" class="hover:text-slate-900">Terms</a>
+                        <a href="#" class="hover:text-slate-900">Security</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Intersection Observer for scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.15 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // 3D Card Hover Effect
+        const cards = document.querySelectorAll('.three-d');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const xc = rect.width / 2;
+                const yc = rect.height / 2;
+                const dx = x - xc;
+                const dy = y - yc;
+                card.style.transform = `perspective(1000px) rotateX(${-dy / 25}deg) rotateY(${dx / 25}deg) scale(1.02)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+            });
+        });
+
+        // Chart rendering
+        const chartData = [20, 45, 30, 60, 40, 75, 55, 90, 65, 80, 50, 70];
+        const container = document.getElementById('chart-container');
+        container.innerHTML = chartData.map(h => `<div class="flex-1 bg-gradient-to-t from-orange-500 to-orange-400 rounded-t-lg" style="height: ${h}%"></div>`).join('');
+
+        // Shortener logic
+        const shortenBtn = document.getElementById('shorten-btn');
+        const urlInput = document.getElementById('long-url-input');
+        shortenBtn.addEventListener('click', () => {
+            if(urlInput.value.trim() === '') {
+                urlInput.classList.add('border-red-400');
+                setTimeout(() => urlInput.classList.remove('border-red-400'), 2000);
+                return;
+            }
+            shortenBtn.innerText = 'Perfecting...';
+            setTimeout(() => {
+                shortenBtn.innerText = 'Shorten URL';
+                alert('Link perfected! linker.io/' + Math.random().toString(36).substring(7));
+                urlInput.value = '';
+            }, 1200);
+        });
+    </script>
+</body>
+</html>
