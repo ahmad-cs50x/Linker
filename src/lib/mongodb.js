@@ -1,28 +1,44 @@
 import { MongoClient } from 'mongodb'
 
 const uri = process.env.MONGODB_URI
-const options = { family: 4 }
 
-let client
-let clientPromise
-
-if (!process.env.MONGODB_URI) {
-  throw new Error('Add Mongo URI to .env.local')
+if (!uri) {
+  throw new Error('Please add MONGODB_URI to .env.local')
 }
 
-if (process.env.NODE_ENV === 'development') {
-  if (!global._mongoClientPromise || global._mongoClientUri !== uri) {
-    if (global._mongoClientPromise) {
-      global._mongoClientPromise.then(c => c.close()).catch(() => {})
-    }
-    client = new MongoClient(uri, options)
-    global._mongoClientPromise = client.connect()
-    global._mongoClientUri = uri
+const options = {
+  serverSelectionTimeoutMS: 30000,
+  connectTimeoutMS: 30000,
+  socketTimeoutMS: 60000,
+  maxPoolSize: 10,
+  retryWrites: true,
+  w: "majority",
+}
+
+let cachedClient = null
+let cachedPromise = null
+
+export async function connectToDatabase() {
+  if (cachedClient) {
+    return cachedClient;
   }
-  clientPromise = global._mongoClientPromise
-} else {
-  client = new MongoClient(uri, options)
-  clientPromise = client.connect()
+
+  console.log("🔄 Connecting to MongoDB Atlas...");
+
+  try {
+    const client = new MongoClient(uri, options);
+    cachedPromise = client.connect();
+    cachedClient = await cachedPromise;
+    console.log("✅ MongoDB connected successfully!");
+  } catch (err) {
+    console.error("❌ MongoDB connection failed:", err.message);
+    cachedClient = null;
+    cachedPromise = null;
+    throw err;
+  }
+
+  return cachedClient;
 }
 
-export default clientPromise
+// Export for compatibility with existing imports
+export default { connect: connectToDatabase };
