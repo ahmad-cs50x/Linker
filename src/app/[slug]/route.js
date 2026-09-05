@@ -1,10 +1,10 @@
-import clientPromise from "@/lib/mongodb";
+import { connectToDatabase } from "@/lib/mongodb";
 
 export async function GET(request, { params }) {
   const { slug } = await params;
 
   try {
-    const client = await clientPromise;
+    const client = await connectToDatabase();
     const db = client.db('linker_db');
     const collection = db.collection('url');
 
@@ -23,7 +23,7 @@ export async function GET(request, { params }) {
       if (!/^https?:\/\//i.test(targetUrl)) {
         targetUrl = 'https://' + targetUrl;
       }
-      
+
       return Response.redirect(targetUrl, 307);
     }
   } catch (error) {

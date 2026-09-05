@@ -1,4 +1,4 @@
-import clientPromise from "@/lib/mongodb";
+import { connectToDatabase } from "@/lib/mongodb";
 
 function generateRandomSlug(length = 6) {
   const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -19,7 +19,7 @@ export async function POST(request) {
       );
     }
 
-    const client = await clientPromise;
+    const client = await connectToDatabase();
     const db = client.db('linker_db');
     const collection = db.collection('url');
     
@@ -90,7 +90,7 @@ export async function POST(request) {
 
 export async function GET() {
   try {
-    const client = await clientPromise;
+    const client = await connectToDatabase();
     const db = client.db('linker_db');
     const collection = db.collection('url');
     
