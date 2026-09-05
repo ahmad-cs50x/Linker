@@ -40,5 +40,5 @@ export async function connectToDatabase() {
   return cachedClient;
 }
 
-// Export for compatibility with existing imports
-export default { connect: connectToDatabase };
+// Export for compatibility
+export default connectToDatabase;
